@@ -18,10 +18,10 @@ export default function AudioTable() {
         <table className="w-full table-fixed border-collapse">
           <thead>
             <tr className="bg-gray-200 sticky top-0 z-10">
-              <th className="w-[60px] p-3 text-left">Thumbnail</th>
-              <th className="w-[50%] p-3 text-left">Name</th>
-              <th className="w-[100px] p-3 text-left">Duration</th>
-              <th className="w-[120px] p-3 text-center">Actions</th>
+              <th className="p-3 text-left w-[60px] sm:w-[80px] md:w-[100px] truncate">Thumbnail</th>
+              <th className="p-3 text-left w-[50%] sm:w-[40%] md:w-[45%] lg:w-[50%]">Name</th>
+              <th className="p-3 text-left w-[100px] sm:w-[120px] md:w-[150px]">Duration</th>
+              <th className="p-3 text-center w-[120px] sm:w-[140px] md:w-[160px]">Actions</th>
             </tr>
           </thead>
           <tbody>
