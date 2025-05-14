@@ -63,12 +63,9 @@ export default function AudioPlayer() {
   const togglePlay = () => {
     const audio = audioRef.current;
     if (!audio) return;
-    if (isPlaying){
-      audio.pause();
-    } else {
-      audio.play(); 
-      setIsPlaying(true);
-    }
+
+    isPlaying ? audio.pause() : audio.play();
+    setIsPlaying(!isPlaying);
   };
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
