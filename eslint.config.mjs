@@ -11,11 +11,20 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+
   {
-    files: ['**/*.ts', '**/*.tsx'],
-    plugins: ['@typescript-eslint'],
+    files: ["**/*.ts", "**/*.tsx"],
+    languageOptions: {
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+      },
+    },
+    plugins: {
+      "@typescript-eslint": require("@typescript-eslint/eslint-plugin"),
+    },
     rules: {
-      '@typescript-eslint/no-unused-expressions':  'off'
+      "@typescript-eslint/no-unused-expressions": "off",
     },
   },
 ];
