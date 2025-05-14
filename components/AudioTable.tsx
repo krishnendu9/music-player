@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useAudio } from '../context/AudioContext';
 import RenameModal from './RenameModal';
 import { formatDuration } from '../lib/utils';
@@ -11,6 +12,16 @@ export default function AudioTable() {
     currentAudioIndex,
     playAudio,
   } = useAudio();
+
+  const [modalAudioId, setModalAudioId] = useState<string | null>(null);
+
+  const openRenameModal = (audioId: string) => {
+    setModalAudioId(audioId);
+  };
+
+  const closeRenameModal = () => {
+    setModalAudioId(null);
+  };
 
   return (
     <div className="mt-4 border border-gray-300 rounded overflow-hidden">
@@ -49,13 +60,22 @@ export default function AudioTable() {
                 <td className="p-3 truncate">{audio.name}</td>
                 <td className="p-3">{formatDuration(audio.duration)}</td>
                 <td className="p-3 text-center" onClick={(e) => e.stopPropagation()}>
-                  <RenameModal audioId={audio.id} />
+                  <button
+                    onClick={() => openRenameModal(audio.id)}
+                    className="text-blue-600 hover:underline text-sm"
+                  >
+                    Rename
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {modalAudioId && (
+        <RenameModal audioId={modalAudioId} closeModal={closeRenameModal} />
+      )}
     </div>
   );
 }

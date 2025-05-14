@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useAudio } from '../context/AudioContext';
 import RenameModal from './RenameModal';
 import { formatDuration } from '../lib/utils';
@@ -11,6 +12,16 @@ export default function AudioGrid() {
     currentAudioIndex,
     playAudio,
   } = useAudio();
+
+  const [modalAudioId, setModalAudioId] = useState<string | null>(null);
+
+  const openRenameModal = (audioId: string) => {
+    setModalAudioId(audioId);
+  };
+
+  const closeRenameModal = () => {
+    setModalAudioId(null);
+  };
 
   return (
     <div className="overflow-y-auto max-h-[300px] mt-4">
@@ -34,12 +45,21 @@ export default function AudioGrid() {
             )}
             <p className="font-medium truncate">{audio.name}</p>
             <p className="text-sm text-gray-600">{formatDuration(audio.duration)}</p>
-            <div className="mt-2"  onClick={(e) => e.stopPropagation()}>
-              <RenameModal audioId={audio.id} />
+            <div className="mt-2" onClick={(e) => e.stopPropagation()}>
+              <button
+                onClick={() => openRenameModal(audio.id)}
+                className="text-blue-600 hover:underline text-sm"
+              >
+                Rename
+              </button>
             </div>
           </div>
         ))}
       </div>
+
+      {modalAudioId && (
+        <RenameModal audioId={modalAudioId} closeModal={closeRenameModal} />
+      )}
     </div>
   );
 }
