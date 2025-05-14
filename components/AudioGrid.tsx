@@ -34,7 +34,7 @@ export default function AudioGrid() {
             )}
             <p className="font-medium truncate">{audio.name}</p>
             <p className="text-sm text-gray-600">{formatDuration(audio.duration)}</p>
-            <div className="mt-2">
+            <div className="mt-2"  onClick={(e) => e.stopPropagation()}>
               <RenameModal audioId={audio.id} />
             </div>
           </div>

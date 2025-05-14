@@ -25,40 +25,48 @@ export default function AudioPlayer() {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
+ useEffect(() => {
+  const audio = audioRef.current;
+  if (!audio) return;
 
-    const onLoadedMetadata = () => setDuration(audio.duration);
-    const onTimeUpdate = () => setCurrentTime(audio.currentTime);
-    const onEnded = () => playNext();
-
-    audio.addEventListener('loadedmetadata', onLoadedMetadata);
-    audio.addEventListener('timeupdate', onTimeUpdate);
-    audio.addEventListener('ended', onEnded);
-
-    return () => {
-      audio.removeEventListener('loadedmetadata', onLoadedMetadata);
-      audio.removeEventListener('timeupdate', onTimeUpdate);
-      audio.removeEventListener('ended', onEnded);
-    };
-  }, [currentAudio, playNext]);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    audio.pause();
-    setCurrentTime(0);
+  const onLoadedMetadata = () => setDuration(audio.duration);
+  const onTimeUpdate = () => setCurrentTime(audio.currentTime);
+  const onEnded = () => {
     setIsPlaying(false);
+    playNext();
+  };
 
-    if (currentAudio) {
-      setTimeout(() => {
-        audio.play();
-        setIsPlaying(true);
-      }, 100);
+  audio.addEventListener('loadedmetadata', onLoadedMetadata);
+  audio.addEventListener('timeupdate', onTimeUpdate);
+  audio.addEventListener('ended', onEnded);
+
+  return () => {
+    audio.removeEventListener('loadedmetadata', onLoadedMetadata);
+    audio.removeEventListener('timeupdate', onTimeUpdate);
+    audio.removeEventListener('ended', onEnded);
+  };
+}, [currentAudio, playNext]);
+
+
+  useEffect(() => {
+  const audio = audioRef.current;
+  if (!audio || !currentAudio) return;
+
+  const playNewAudio = async () => {
+    try {
+      await audio.pause();
+      audio.currentTime = 0;
+      await audio.play();
+      setIsPlaying(true);
+    } catch (err) {
+      console.error("Error playing audio:", err);
+      setIsPlaying(false);
     }
-  }, [currentAudio]);
+  };
+
+  playNewAudio();
+}, [currentAudio]);
+
 
   const togglePlay = () => {
     const audio = audioRef.current;
@@ -125,8 +133,8 @@ export default function AudioPlayer() {
           <input
             type="range"
             min={0}
-            max={duration || 0}
-            value={currentTime}
+            max={Math.ceil(duration) || 0}
+            value={Math.min(currentTime, Math.ceil(duration))}
             onChange={handleSeek}
             className="w-full accent-green-600"
           />

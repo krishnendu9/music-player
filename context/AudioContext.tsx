@@ -73,16 +73,20 @@ const addAudioFiles = (files: File[]) => {
   };
 
   const playNext = () => {
-    if (currentAudioIndex < audioFiles.length - 1) {
-      setCurrentAudioIndex(currentAudioIndex + 1);
-    }
-  };
+  setCurrentAudioIndex(prevIndex => {
+    const nextIndex = (prevIndex + 1) % audioFiles.length;
+    return nextIndex;
+  });
+};
 
-  const playPrevious = () => {
-    if (currentAudioIndex > 0) {
-      setCurrentAudioIndex(currentAudioIndex - 1);
-    }
-  };
+const playPrevious = () => {
+  setCurrentAudioIndex(prevIndex => {
+    const prevIndexSafe =
+      (prevIndex - 1 + audioFiles.length) % audioFiles.length;
+    return prevIndexSafe;
+  });
+};
+
 
   return (
     <AudioContext.Provider

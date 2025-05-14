@@ -48,7 +48,7 @@ export default function AudioTable() {
                 </td>
                 <td className="p-3 truncate">{audio.name}</td>
                 <td className="p-3">{formatDuration(audio.duration)}</td>
-                <td className="p-3 text-center">
+                <td className="p-3 text-center" onClick={(e) => e.stopPropagation()}>
                   <RenameModal audioId={audio.id} />
                 </td>
               </tr>

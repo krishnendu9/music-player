@@ -6,9 +6,14 @@ import UploadDropzone from '../components/UploadDropzone';
 import AudioTable from '../components/AudioTable';
 import AudioGrid from '../components/AudioGrid';
 import AudioPlayer from '../components/AudioPlayer';
+import { FaList, FaThLarge } from 'react-icons/fa';
 
 export default function Home() {
   const [viewMode, setViewMode] = useState<'table' | 'grid'>('table');
+
+  const toggleView = () => {
+    setViewMode(prev => (prev === 'table' ? 'grid' : 'table'));
+  };
 
   return (
     <AudioProvider>
@@ -20,26 +25,22 @@ export default function Home() {
         <div className="flex-grow p-6 flex flex-col">
           <UploadDropzone />
 
-          <div className="my-6 flex gap-4 justify-end">
+          <div className="my-6 flex justify-end">
             <button
-              onClick={() => setViewMode('table')}
-              className={`px-5 py-2 rounded-full font-medium transition-all duration-200 shadow-sm ${
-                viewMode === 'table'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white border border-blue-600 text-blue-600'
-              } hover:shadow-md hover:ring-2 hover:ring-blue-300 cursor-pointer`}
+              onClick={toggleView}
+              className="px-5 py-2 rounded-full font-medium transition-all duration-200 shadow-sm bg-white border border-gray-300 hover:bg-gray-100 flex items-center gap-2"
             >
-              Table View
-            </button>
-            <button
-              onClick={() => setViewMode('grid')}
-              className={`px-5 py-2 rounded-full font-medium transition-all duration-200 shadow-sm ${
-                viewMode === 'grid'
-                  ? 'bg-green-600 text-white'
-                  : 'bg-white border border-green-600 text-green-600'
-              } hover:shadow-md hover:ring-2 hover:ring-green-300 cursor-pointer`}
-            >
-              Grid View
+              {viewMode === 'table' ? (
+                <>
+                  <FaThLarge className="text-green-600" />
+                  <span className="hidden sm:inline">Grid View</span>
+                </>
+              ) : (
+                <>
+                  <FaList className="text-blue-600" />
+                  <span className="hidden sm:inline">Table View</span>
+                </>
+              )}
             </button>
           </div>
 
@@ -53,4 +54,3 @@ export default function Home() {
     </AudioProvider>
   );
 }
-
